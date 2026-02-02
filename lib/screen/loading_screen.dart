@@ -7,7 +7,7 @@ class LoadingScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Loading();
+    return const Loading();
   }
 }
 
@@ -22,12 +22,12 @@ class _LoadingState extends State<Loading> {
   @override
   void initState() {
     super.initState();
-    Future.delayed(Duration(seconds: 3), () {
+    Future.delayed(const Duration(seconds: 3), () {
       Navigator.push(
         context,
         MaterialPageRoute(
           builder: (context) {
-            return HomeScreen();
+            return const HomeScreen();
           },
         ),
       );
@@ -43,7 +43,7 @@ class _LoadingState extends State<Loading> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Image.asset('assets/images/flutterflow.jpg', width: 300),
-            SpinKitFadingCube(
+            const SpinKitFadingCube(
               size: 30,
               color: Color.fromARGB(219, 1, 88, 155),
               duration: Duration(seconds: 3),

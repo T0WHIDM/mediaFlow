@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:mediaflow/screen/contact_us_screen.dart';
+import 'package:mediaflow/theme/theme_provider.dart';
+import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -30,49 +33,73 @@ class _HomeScreenState extends State<HomeScreen> {
         backgroundColor: const Color.fromARGB(255, 1, 88, 155),
         title: const Text(
           'mediaflow',
-          style: TextStyle(fontSize: 22, fontFamily: 'GH'),
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 22,
+            fontFamily: 'GH',
+            fontWeight: FontWeight.bold,
+          ),
         ),
         centerTitle: true,
       ),
 
       //drawer menu
-      drawer: const Drawer(
+      drawer: Drawer(
         child: Center(
           child: Column(
             children: [
-              SizedBox(height: 100),
-              CircleAvatar(
+              const SizedBox(height: 100),
+              const CircleAvatar(
                 radius: 70,
                 backgroundImage: AssetImage('assets/images/flutterflow.jpg'),
               ),
-              SizedBox(height: 70),
+              const SizedBox(height: 70),
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  SizedBox(width: 30),
-                  FaIcon(FontAwesomeIcons.telegram),
-                  SizedBox(width: 15),
-                  Text(
+                  const SizedBox(width: 30),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return const ContactUsScreen();
+                          },
+                        ),
+                      );
+                    },
+                    child: const FaIcon(FontAwesomeIcons.telegram),
+                  ),
+                  const SizedBox(width: 15),
+                  const Text(
                     'contact us',
                     style: TextStyle(fontSize: 22, fontFamily: 'GH'),
                   ),
                 ],
               ),
-              SizedBox(height: 50),
+              const SizedBox(height: 50),
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  SizedBox(width: 30),
-                  FaIcon(FontAwesomeIcons.display),
-                  SizedBox(width: 15),
-                  Text(
+                  const SizedBox(width: 30),
+                  GestureDetector(
+                    onTap: () {
+                      Provider.of<ThemeProvider>(
+                        context,
+                        listen: false,
+                      ).toggleTheme();
+                    },
+                    child: const FaIcon(FontAwesomeIcons.moon),
+                  ),
+                  const SizedBox(width: 15),
+                  const Text(
                     'theme',
                     style: TextStyle(fontSize: 22, fontFamily: 'GH'),
                   ),
                 ],
               ),
-              SizedBox(height: 430),
-              Padding(
+              const SizedBox(height: 430),
+              const Padding(
                 padding: EdgeInsets.all(5.0),
                 child: Text(
                   'version 1.0.0',
