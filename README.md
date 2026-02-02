@@ -53,4 +53,3 @@ You are responsible for how you use this code.
 
 ---
 
-## 📂 Project Structure (Simplified)
