@@ -10,10 +10,15 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
+      //theme
+      theme: ThemeData.light(),
+      darkTheme: ThemeData.dark(),
+      themeMode: ThemeMode.system,
+
       title: 'mediaFlow',
       debugShowCheckedModeBanner: false,
-      home: LoadingScreen(),
+      home: const LoadingScreen(),
     );
   }
 }
