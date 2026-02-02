@@ -1,16 +1,56 @@
-# mediaflow
+# Flutter Media Fetcher (Educational Project)
 
-A new Flutter project.
+A Flutter educational project created to practice:
+- Networking in Flutter
+- Working with streams and file downloads
+- Using third-party Dart packages
+- Basic state management and UI feedback (progress, loading)
 
-## Getting Started
+> ⚠️ This project is for learning purposes only.
 
-This project is a starting point for a Flutter application.
+---
 
-A few resources to get you started if this is your first Flutter project:
+## 🚀 About the Project
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+This project demonstrates how a Flutter application can:
+- Accept a video URL as input
+- Fetch video metadata and available streams
+- Download media files while showing progress
+- Store files locally on the device
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+The main goal of this repository is learning Flutter concepts, not providing a production-ready application.
+
+---
+
+## 📚 What You Will Learn
+
+- Using youtube_explode_dart for extracting video information
+- Downloading files with progress using dio
+- Handling permissions and local storage
+- Building a simple but practical Flutter UI
+- Structuring a Flutter project cleanly
+
+---
+
+## 🧪 Tech Stack
+
+- Flutter
+- Dart
+- youtube_explode_dart
+- dio
+- path_provider
+
+---
+
+## ⚠️ Disclaimer
+
+This project is intended strictly for educational and experimental purposes.
+
+Downloading content from YouTube or other platforms may violate their Terms of Service.
+The author of this project does not encourage or support copyright infringement.
+
+You are responsible for how you use this code.
+
+---
+
+## 📂 Project Structure (Simplified)
