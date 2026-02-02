@@ -37,7 +37,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
       //drawer menu
       drawer: const Drawer(
-        backgroundColor: Colors.white,
         child: Center(
           child: Column(
             children: [
