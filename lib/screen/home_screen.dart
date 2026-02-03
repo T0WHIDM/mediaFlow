@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:mediaflow/constants/colors.dart';
 import 'package:mediaflow/screen/contact_us_screen.dart';
 import 'package:mediaflow/provider/theme_provider.dart';
 import 'package:mediaflow/services/youtube_services.dart';
@@ -32,9 +33,26 @@ class _HomeScreenState extends State<HomeScreen> {
     if (_controller.text.trim().isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text(
-            ' ❌ please enter a link',
-            style: TextStyle(fontSize: 22, fontFamily: 'GH'),
+          backgroundColor: CustomColor.blueColor,
+          elevation: 2,
+          duration: Duration(seconds: 3),
+          behavior: SnackBarBehavior.floating,
+          content: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(Icons.error_outline_outlined, color: Colors.red, size: 35),
+              SizedBox(width: 10),
+              Center(
+                child: Text(
+                  'please enter a link',
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontFamily: 'GH',
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
       );
@@ -49,19 +67,62 @@ class _HomeScreenState extends State<HomeScreen> {
       if (!mounted) return;
 
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            'downloaded \n${file.path}',
-            style: const TextStyle(fontSize: 22, fontFamily: 'GH'),
+        const SnackBar(
+          backgroundColor: CustomColor.blueColor,
+          elevation: 2,
+          duration: Duration(seconds: 3),
+          behavior: SnackBarBehavior.floating,
+          content: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(Icons.done, color: Color.fromARGB(255, 5, 138, 9)),
+              SizedBox(width: 10),
+              Center(
+                child: Row(
+                  children: [
+                    Icon(Icons.done, color: Colors.green, size: 35),
+                    Text(
+                      'video downloaded',
+                      style: TextStyle(
+                        fontSize: 24,
+                        fontFamily: 'GH',
+                        color: Colors.white,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
         ),
       );
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            'error ❌\n$e',
-            style: const TextStyle(fontSize: 22, fontFamily: 'GH'),
+        const SnackBar(
+          backgroundColor: CustomColor.blueColor,
+          elevation: 2,
+          duration: Duration(seconds: 3),
+          behavior: SnackBarBehavior.floating,
+          content: Center(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.error_outline,
+                  color: Color.fromARGB(231, 210, 24, 10),
+                  size: 35,
+                ),
+                SizedBox(width: 10),
+                Text(
+                  'error ( invalid url ) ',
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontFamily: 'GH',
+                    color: Colors.white,
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       );
