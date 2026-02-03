@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:mediaflow/screen/loading_screen.dart';
-import 'package:mediaflow/theme/theme_provider.dart';
+import 'package:mediaflow/provider/theme_provider.dart';
 import 'package:provider/provider.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+
   runApp(
     ChangeNotifierProvider(
       create: (context) {
@@ -24,7 +26,6 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       //theme
       theme: Provider.of<ThemeProvider>(context).themeData,
-       
       title: 'mediaFlow',
       debugShowCheckedModeBanner: false,
       home: const LoadingScreen(),

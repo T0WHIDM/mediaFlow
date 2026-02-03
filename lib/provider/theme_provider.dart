@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:mediaflow/theme/my_theme.dart';
+import 'package:mediaflow/theme/theme.dart';
 
 class ThemeProvider extends ChangeNotifier {
-  ThemeData _themeData = lightMode;
+  ThemeData _themeData = dartMode;
 
   ThemeData get themeData => _themeData;
 
