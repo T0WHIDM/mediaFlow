@@ -14,7 +14,7 @@ class ContactUsScreen extends StatelessWidget {
           'mediaflow',
           style: TextStyle(
             color: Colors.white,
-            fontSize: 22,
+            fontSize: 24,
             fontFamily: 'GH',
             fontWeight: FontWeight.bold,
           ),
@@ -26,7 +26,7 @@ class ContactUsScreen extends StatelessWidget {
             onTap: () {
               Navigator.of(context).pop();
             },
-            child: const FaIcon(
+            child: const FaIcon(size: 20,
               FontAwesomeIcons.arrowLeft,
               color: Colors.white,
             ),
