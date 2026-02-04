@@ -3,7 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:mediaflow/constants/colors.dart';
 import 'package:mediaflow/screen/contact_us_screen.dart';
 import 'package:mediaflow/provider/theme_provider.dart';
-import 'package:mediaflow/services/youtube_services.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -16,9 +16,6 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   FocusNode negahban1 = FocusNode();
   final _controller = TextEditingController();
-  final YoutubeServices _youtubeServices = YoutubeServices();
-
-  bool _isLoading = false;
 
   @override
   void initState() {
@@ -27,108 +24,6 @@ class _HomeScreenState extends State<HomeScreen> {
     negahban1.addListener(() {
       setState(() {});
     });
-  }
-
-  Future<void> _download() async {
-    if (_controller.text.trim().isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          backgroundColor: CustomColor.blueColor,
-          elevation: 2,
-          duration: Duration(seconds: 3),
-          behavior: SnackBarBehavior.floating,
-          content: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(Icons.error_outline_outlined, color: Colors.red, size: 35),
-              SizedBox(width: 10),
-              Center(
-                child: Text(
-                  'please enter a link',
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontFamily: 'GH',
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      );
-      return;
-    }
-
-    setState(() => _isLoading = true);
-
-    try {
-      final file = await _youtubeServices.downloadVideo(_controller.text);
-
-      if (!mounted) return;
-
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          backgroundColor: CustomColor.blueColor,
-          elevation: 2,
-          duration: Duration(seconds: 3),
-          behavior: SnackBarBehavior.floating,
-          content: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(Icons.done, color: Color.fromARGB(255, 5, 138, 9)),
-              SizedBox(width: 10),
-              Center(
-                child: Row(
-                  children: [
-                    Icon(Icons.done, color: Colors.green, size: 35),
-                    Text(
-                      'video downloaded',
-                      style: TextStyle(
-                        fontSize: 24,
-                        fontFamily: 'GH',
-                        color: Colors.white,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
-      );
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          backgroundColor: CustomColor.blueColor,
-          elevation: 2,
-          duration: Duration(seconds: 3),
-          behavior: SnackBarBehavior.floating,
-          content: Center(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(
-                  Icons.error_outline,
-                  color: Color.fromARGB(231, 210, 24, 10),
-                  size: 35,
-                ),
-                SizedBox(width: 10),
-                Text(
-                  'error ( invalid url ) ',
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontFamily: 'GH',
-                    color: Colors.white,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      );
-    } finally {
-      setState(() => _isLoading = false);
-    }
   }
 
   @override
@@ -269,28 +164,19 @@ class _HomeScreenState extends State<HomeScreen> {
                 minimumSize: const Size(150, 40),
                 backgroundColor: const Color.fromARGB(219, 1, 88, 155),
               ),
-              onPressed: _isLoading ? null : _download,
-              child: _isLoading
-                  ? const CircularProgressIndicator()
-                  : const Text(
-                      'download',
-                      style: TextStyle(
-                        fontSize: 22,
-                        fontFamily: 'GH',
-                        color: Colors.white,
-                      ),
-                    ),
+              onPressed: () {},
+              child: const Text(
+                'download',
+                style: TextStyle(
+                  fontSize: 22,
+                  fontFamily: 'GH',
+                  color: Colors.white,
+                ),
+              ),
             ),
           ],
         ),
       ),
     );
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    _youtubeServices.dispose();
-    super.dispose();
   }
 }
