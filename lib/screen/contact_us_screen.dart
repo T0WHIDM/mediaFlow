@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:mediaflow/constants/colors.dart';
+import 'package:mediaflow/util/url_luncher.dart';
 
 class ContactUsScreen extends StatelessWidget {
   const ContactUsScreen({super.key});
@@ -26,7 +27,8 @@ class ContactUsScreen extends StatelessWidget {
             onTap: () {
               Navigator.of(context).pop();
             },
-            child: const FaIcon(size: 20,
+            child: const FaIcon(
+              size: 20,
               FontAwesomeIcons.arrowLeft,
               color: Colors.white,
             ),
@@ -41,58 +43,73 @@ class ContactUsScreen extends StatelessWidget {
             color: CustomColor.blueColor,
             borderRadius: BorderRadius.all(Radius.circular(15)),
           ),
-          child: const Center(
+          child: Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    FaIcon(FontAwesomeIcons.telegram, color: Colors.white),
-                    SizedBox(width: 20),
-                    Text(
-                      '@T0WHID',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
-                        fontFamily: 'GH',
-                        fontWeight: FontWeight.bold,
+                GestureDetector(
+                  onTap: () {
+                    MyUrlLauncher.launchLink('https://t.me/T0WHID');
+                  },
+                  child: const Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      FaIcon(FontAwesomeIcons.telegram, color: Colors.white),
+                      SizedBox(width: 20),
+                      Text(
+                        '@T0WHID',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 20,
+                          fontFamily: 'GH',
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    FaIcon(FontAwesomeIcons.github, color: Colors.white),
-                    SizedBox(width: 20),
-                    Text(
-                      'T0WHIDM',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
-                        fontFamily: 'GH',
-                        fontWeight: FontWeight.bold,
+                GestureDetector(
+                  onTap: () {
+                    MyUrlLauncher.launchLink('https://github.com/T0WHIDM');
+                  },
+                  child: const Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      FaIcon(FontAwesomeIcons.github, color: Colors.white),
+                      SizedBox(width: 20),
+                      Text(
+                        'T0WHIDM',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 20,
+                          fontFamily: 'GH',
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(Icons.email, color: Colors.white),
-                    SizedBox(width: 10),
-                    Text(
-                      'towhidmgholami@gmail.com',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
-                        fontFamily: 'GH',
-                        fontWeight: FontWeight.bold,
+                 GestureDetector(
+                  onTap: () {
+                    MyUrlLauncher.launchLink('mailto:towhidmgholami@gmail.com');
+                  },
+                   child: const Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(Icons.email, color: Colors.white),
+                      SizedBox(width: 10),
+                      Text(
+                        'towhidmgholami@gmail.com',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 20,
+                          fontFamily: 'GH',
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                    ),
-                  ],
-                ),
+                    ],
+                                   ),
+                 ),
               ],
             ),
           ),

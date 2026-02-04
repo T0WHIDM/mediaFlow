@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:mediaflow/constants/colors.dart';
 import 'package:mediaflow/screen/contact_us_screen.dart';
 import 'package:mediaflow/provider/theme_provider.dart';
-import 'package:mediaflow/services/youtube_services.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -15,9 +16,6 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   FocusNode negahban1 = FocusNode();
   final _controller = TextEditingController();
-  final YoutubeServices _youtubeServices = YoutubeServices();
-
-  bool _isLoading = false;
 
   @override
   void initState() {
@@ -26,48 +24,6 @@ class _HomeScreenState extends State<HomeScreen> {
     negahban1.addListener(() {
       setState(() {});
     });
-  }
-
-  Future<void> _download() async {
-    if (_controller.text.trim().isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text(
-            ' ❌ please enter a link',
-            style: TextStyle(fontSize: 22, fontFamily: 'GH'),
-          ),
-        ),
-      );
-      return;
-    }
-
-    setState(() => _isLoading = true);
-
-    try {
-      final file = await _youtubeServices.downloadVideo(_controller.text);
-
-      if (!mounted) return;
-
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            'downloaded \n${file.path}',
-            style: const TextStyle(fontSize: 22, fontFamily: 'GH'),
-          ),
-        ),
-      );
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            'error ❌\n$e',
-            style: const TextStyle(fontSize: 22, fontFamily: 'GH'),
-          ),
-        ),
-      );
-    } finally {
-      setState(() => _isLoading = false);
-    }
   }
 
   @override
@@ -208,28 +164,19 @@ class _HomeScreenState extends State<HomeScreen> {
                 minimumSize: const Size(150, 40),
                 backgroundColor: const Color.fromARGB(219, 1, 88, 155),
               ),
-              onPressed: _isLoading ? null : _download,
-              child: _isLoading
-                  ? const CircularProgressIndicator()
-                  : const Text(
-                      'download',
-                      style: TextStyle(
-                        fontSize: 22,
-                        fontFamily: 'GH',
-                        color: Colors.white,
-                      ),
-                    ),
+              onPressed: () {},
+              child: const Text(
+                'download',
+                style: TextStyle(
+                  fontSize: 22,
+                  fontFamily: 'GH',
+                  color: Colors.white,
+                ),
+              ),
             ),
           ],
         ),
       ),
     );
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    _youtubeServices.dispose();
-    super.dispose();
   }
 }
