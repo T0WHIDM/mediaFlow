@@ -5,7 +5,7 @@ ThemeData lightMode = ThemeData(
   appBarTheme: const AppBarTheme(iconTheme: IconThemeData(color: Colors.white)),
 );
 
-ThemeData dartMode = ThemeData(
+ThemeData darkMode = ThemeData(
   brightness: Brightness.dark,
   appBarTheme: const AppBarTheme(iconTheme: IconThemeData(color: Colors.white)),
 );
