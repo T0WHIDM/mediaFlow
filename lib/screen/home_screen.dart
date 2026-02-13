@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:mediaflow/constants/colors.dart';
 import 'package:mediaflow/screen/contact_us_screen.dart';
 import 'package:mediaflow/provider/theme_provider.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -57,49 +55,49 @@ class _HomeScreenState extends State<HomeScreen> {
                 backgroundImage: AssetImage('assets/images/flutterflow.jpg'),
               ),
               const SizedBox(height: 70),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  const SizedBox(width: 30),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) {
-                            return const ContactUsScreen();
-                          },
-                        ),
-                      );
-                    },
-                    child: const FaIcon(FontAwesomeIcons.telegram),
-                  ),
-                  const SizedBox(width: 15),
-                  const Text(
-                    'contact us',
-                    style: TextStyle(fontSize: 22, fontFamily: 'GH'),
-                  ),
-                ],
+              GestureDetector(
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) {
+                        return const ContactUsScreen();
+                      },
+                    ),
+                  );
+                },
+                child: const Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    SizedBox(width: 30),
+                    FaIcon(FontAwesomeIcons.telegram),
+                    SizedBox(width: 15),
+                    Text(
+                      'contact us',
+                      style: TextStyle(fontSize: 22, fontFamily: 'GH'),
+                    ),
+                  ],
+                ),
               ),
               const SizedBox(height: 50),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  const SizedBox(width: 30),
-                  GestureDetector(
-                    onTap: () {
-                      Provider.of<ThemeProvider>(
-                        context,
-                        listen: false,
-                      ).toggleTheme();
-                    },
-                    child: const FaIcon(FontAwesomeIcons.moon),
-                  ),
-                  const SizedBox(width: 15),
-                  const Text(
-                    'theme',
-                    style: TextStyle(fontSize: 22, fontFamily: 'GH'),
-                  ),
-                ],
+              GestureDetector(
+                onTap: () {
+                  Provider.of<ThemeProvider>(
+                    context,
+                    listen: false,
+                  ).toggleTheme();
+                },
+                child: const Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    SizedBox(width: 30),
+                    FaIcon(FontAwesomeIcons.moon),
+                    SizedBox(width: 15),
+                    Text(
+                      'theme',
+                      style: TextStyle(fontSize: 22, fontFamily: 'GH'),
+                    ),
+                  ],
+                ),
               ),
               const SizedBox(height: 430),
               const Padding(

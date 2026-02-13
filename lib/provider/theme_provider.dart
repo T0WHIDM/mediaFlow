@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mediaflow/theme/theme.dart';
 
 class ThemeProvider extends ChangeNotifier {
-  ThemeData _themeData = dartMode;
+  ThemeData _themeData = darkMode;
 
   ThemeData get themeData => _themeData;
 
@@ -13,7 +13,7 @@ class ThemeProvider extends ChangeNotifier {
 
   void toggleTheme() {
     if (_themeData == lightMode) {
-      _themeData = dartMode;
+      _themeData = darkMode;
     } else {
       _themeData = lightMode;
     }
