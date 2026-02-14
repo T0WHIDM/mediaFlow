@@ -10,26 +10,27 @@ class DownloadProvider extends ChangeNotifier {
   bool _isDownloading = false;
   double _progress = 0.0;
   String _statusText = "";
+  
+  CancelToken? _cancelToken;
 
-  //difine getter
   bool get isDownloading => _isDownloading;
   double get progress => _progress;
   String get statusText => _statusText;
 
-  // downloand function
   Future<void> downloadVideo(String url) async {
     if (url.isEmpty) {
-      _statusText = "لطفا لینک را وارد کنید";
+      _statusText = " Please enter the link ";
       notifyListeners();
       return;
     }
 
-    // permissions
     bool hasPermission = await _requestPermission();
     if (hasPermission) {
       _isDownloading = true;
-      _statusText = "در حال آنالیز ویدیو...";
+      _statusText = "Analyzing video...";
       _progress = 0.0;
+      
+      _cancelToken = CancelToken();
       notifyListeners();
 
       var yt = YoutubeExplode();
@@ -38,41 +39,58 @@ class DownloadProvider extends ChangeNotifier {
         var videoId = VideoId(url.trim());
         var video = await yt.videos.get(videoId);
         var manifest = await yt.videos.streamsClient.getManifest(videoId);
-
         var streamInfo = manifest.muxed.withHighestBitrate();
+
+        if (_cancelToken!.isCancelled) return;
 
         String savePath = await _getFilePath(video.title);
 
-        _statusText = "شروع دانلود: ${video.title}";
+        _statusText = " Downloading: ${video.title}";
         notifyListeners();
 
         await Dio().download(
           streamInfo.url.toString(),
           savePath,
+          cancelToken: _cancelToken,
           onReceiveProgress: (received, total) {
             if (total != -1) {
               _progress = received / total;
               _statusText =
                   "${(received / 1024 / 1024).toStringAsFixed(1)} MB / ${(total / 1024 / 1024).toStringAsFixed(1)} MB";
-              notifyListeners(); // آپدیت لحظه ای پروگرس بار
+              notifyListeners();
             }
           },
         );
 
-        _statusText = "✅ دانلود کامل شد!";
+        _statusText = " Download Completed ✅";
       } catch (e) {
-        _statusText = "❌ خطا: لینک اشتباه است یا مشکل اینترنت";
+        if (e is DioException && CancelToken.isCancel(e)) {
+          _statusText = " Download Cancelled ⛔";
+          _progress = 0.0;
+        } else {
+          _statusText = " Error: Invalid link or connection ❌";
+        }
       } finally {
         yt.close();
         _isDownloading = false;
+        _cancelToken = null;
         notifyListeners();
       }
     } else {
-      _statusText = "❌ مجوز دسترسی به حافظه داده نشد";
+      _statusText = " Permission denied ❌";
       notifyListeners();
     }
   }
 
+  void cancelDownload() {
+    if (_cancelToken != null && !_cancelToken!.isCancelled) {
+      _cancelToken!.cancel("User cancelled download");
+      _isDownloading = false;
+      notifyListeners();
+    }
+  }
+
+  
   Future<bool> _requestPermission() async {
     if (Platform.isAndroid) {
       final androidInfo = await DeviceInfoPlugin().androidInfo;

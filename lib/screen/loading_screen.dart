@@ -42,7 +42,7 @@ class _LoadingState extends State<Loading> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.asset('assets/images/flutterflow.jpg', width: 300),
+            Image.asset('assets/images/flutterflow.jpg', width: 400),
             const SpinKitFadingCube(
               size: 30,
               color: Color.fromARGB(219, 1, 88, 155),
