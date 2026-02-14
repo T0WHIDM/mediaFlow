@@ -1,20 +1,15 @@
 name: mediaflow
 description: "A new Flutter project."
-
-publish_to: 'none' 
-
-
+publish_to: 'none'
 version: 1.0.0+1
 
 environment:
   sdk: ^3.10.0
 
-
 dependencies:
   flutter:
     sdk: flutter
   font_awesome_flutter: ^10.12.0
-
   cupertino_icons: ^1.0.8
   flutter_spinkit: ^5.2.2
   provider: ^6.1.5+1
@@ -28,53 +23,43 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-
-
+  flutter_launcher_icons: ^0.14.4
   flutter_lints: ^6.0.0
 
-
-
-
 flutter:
-
-
   uses-material-design: true
-
 
   assets:
     - assets/images/
 
-
-
-fonts:
+  fonts:
     - family: GR
       fonts:
         - asset: assets/fonts/GilroyRegular.ttf
           weight: 400
-
     - family: GM
       fonts:
         - asset: assets/fonts/GilroyMedium.ttf
           weight: 500
-
-          
-
     - family: GB
       fonts:
         - asset: assets/fonts/GilroyBold.ttf
           weight: 700
-
     - family: GEB
       fonts:
         - asset: assets/fonts/GilroyExtraBold.ttf
           weight: 800
-          
     - family: GH
       fonts:
         - asset: assets/fonts/GilroyHeavy.ttf
           weight: 900
-
     - family: SM
       fonts:
         - asset: assets/fonts/ShabnamMedium.ttf
           weight: 500
+
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/images/flutterflow.jpg"
+  min_sdk_android: 21
