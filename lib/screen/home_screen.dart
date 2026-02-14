@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:mediaflow/screen/contact_us_screen.dart';
 import 'package:mediaflow/provider/theme_provider.dart';
+import 'package:mediaflow/provider/download_provider.dart'; // فایل جدید را ایمپورت کنید
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -18,7 +19,6 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-
     negahban1.addListener(() {
       setState(() {});
     });
@@ -26,10 +26,12 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // دسترسی به پروایدر دانلود
+    // listen: true یعنی اگر متغیرهای داخل پروایدر عوض شد، صفحه را دوباره بساز
+    final downloadProv = Provider.of<DownloadProvider>(context);
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
-
-      //appbar
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 1, 88, 155),
         title: const Text(
@@ -44,7 +46,6 @@ class _HomeScreenState extends State<HomeScreen> {
         centerTitle: true,
       ),
 
-      //drawer menu
       drawer: Drawer(
         child: Center(
           child: Column(
@@ -115,7 +116,7 @@ class _HomeScreenState extends State<HomeScreen> {
       body: Center(
         child: Column(
           children: [
-            const SizedBox(height: 250),
+            const SizedBox(height: 220),
             const Text(
               'please enter video url',
               style: TextStyle(fontSize: 22, fontFamily: 'GH'),
@@ -123,13 +124,17 @@ class _HomeScreenState extends State<HomeScreen> {
             const SizedBox(height: 50),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 40.0),
-
-              //text field
               child: TextField(
                 controller: _controller,
                 focusNode: negahban1,
                 decoration: InputDecoration(
                   labelText: 'url',
+                  suffixIcon: _controller.text.isNotEmpty
+                      ? IconButton(
+                          icon: const Icon(Icons.clear),
+                          onPressed: () => _controller.clear(),
+                        )
+                      : null,
                   labelStyle: TextStyle(
                     fontSize: 22,
                     fontFamily: 'GH',
@@ -154,23 +159,73 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
             ),
-            const SizedBox(height: 50),
+            const SizedBox(height: 30),
 
-            //button
+            // --- نمایشگر پیشرفت (از پروایدر خوانده می‌شود) ---
+            if (downloadProv.isDownloading ||
+                downloadProv.statusText.isNotEmpty)
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 40.0),
+                child: Column(
+                  children: [
+                    if (downloadProv.isDownloading)
+                      LinearProgressIndicator(
+                        value: downloadProv.progress > 0
+                            ? downloadProv.progress
+                            : null,
+                        backgroundColor: Colors.white,
+                        color: const Color.fromARGB(255, 1, 88, 155),
+                        minHeight: 10,
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                    const SizedBox(height: 10),
+                    Text(
+                      downloadProv.statusText,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontFamily: 'GH',
+                        fontSize: 16,
+                        color: downloadProv.statusText.contains('❌')
+                            ? Colors.red
+                            : Colors.white,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+            const SizedBox(height: 30),
+
+            // --- دکمه دانلود ---
             ElevatedButton(
               style: ElevatedButton.styleFrom(
                 minimumSize: const Size(150, 40),
                 backgroundColor: const Color.fromARGB(219, 1, 88, 155),
               ),
-              onPressed: () {},
-              child: const Text(
-                'download',
-                style: TextStyle(
-                  fontSize: 22,
-                  fontFamily: 'GH',
-                  color: Colors.white,
-                ),
-              ),
+              onPressed: downloadProv.isDownloading
+                  ? null
+                  : () {
+                      FocusScope.of(context).unfocus(); // بستن کیبورد
+                      // فراخوانی تابع دانلود از داخل پروایدر
+                      downloadProv.downloadVideo(_controller.text);
+                    },
+              child: downloadProv.isDownloading
+                  ? const SizedBox(
+                      width: 20,
+                      height: 20,
+                      child: CircularProgressIndicator(
+                        color: Colors.white,
+                        strokeWidth: 2,
+                      ),
+                    )
+                  : const Text(
+                      'download',
+                      style: TextStyle(
+                        fontSize: 22,
+                        fontFamily: 'GH',
+                        color: Colors.white,
+                      ),
+                    ),
             ),
           ],
         ),

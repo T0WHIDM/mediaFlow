@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mediaflow/provider/download_provider.dart';
 import 'package:mediaflow/screen/loading_screen.dart';
 import 'package:mediaflow/provider/theme_provider.dart';
 import 'package:provider/provider.dart';
@@ -7,13 +8,13 @@ void main() {
   WidgetsFlutterBinding.ensureInitialized();
 
   runApp(
-    ChangeNotifierProvider(
-      create: (context) {
-        return ThemeProvider();
-      },
-      builder: (context, child) {
-        return const MyApp();
-      },
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => ThemeProvider()),
+        
+        ChangeNotifierProvider(create: (_) => DownloadProvider()),
+      ],
+      child: const MyApp(),
     ),
   );
 }
@@ -28,6 +29,7 @@ class MyApp extends StatelessWidget {
       theme: Provider.of<ThemeProvider>(context).themeData,
       title: 'mediaFlow',
       debugShowCheckedModeBanner: false,
+      
       home: const LoadingScreen(),
     );
   }
