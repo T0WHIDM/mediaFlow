@@ -24,7 +24,7 @@ class DownloadProvider extends ChangeNotifier {
       return;
     }
 
-    // بررسی مجوزها
+    // permissions
     bool hasPermission = await _requestPermission();
     if (hasPermission) {
       _isDownloading = true;

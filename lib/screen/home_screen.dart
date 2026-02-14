@@ -26,9 +26,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // دسترسی به پروایدر دانلود
-    // listen: true یعنی اگر متغیرهای داخل پروایدر عوض شد، صفحه را دوباره بساز
-    final downloadProv = Provider.of<DownloadProvider>(context);
+    final downloadProv = context.watch<DownloadProvider>(); //***
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -82,10 +80,7 @@ class _HomeScreenState extends State<HomeScreen> {
               const SizedBox(height: 50),
               GestureDetector(
                 onTap: () {
-                  Provider.of<ThemeProvider>(
-                    context,
-                    listen: false,
-                  ).toggleTheme();
+                  context.read<ThemeProvider>().toggleTheme();
                 },
                 child: const Row(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -161,7 +156,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             const SizedBox(height: 30),
 
-            // --- نمایشگر پیشرفت (از پروایدر خوانده می‌شود) ---
+            //progress bar
             if (downloadProv.isDownloading ||
                 downloadProv.statusText.isNotEmpty)
               Padding(
@@ -196,7 +191,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
             const SizedBox(height: 30),
 
-            // --- دکمه دانلود ---
+            // download button
             ElevatedButton(
               style: ElevatedButton.styleFrom(
                 minimumSize: const Size(150, 40),
@@ -205,8 +200,8 @@ class _HomeScreenState extends State<HomeScreen> {
               onPressed: downloadProv.isDownloading
                   ? null
                   : () {
-                      FocusScope.of(context).unfocus(); // بستن کیبورد
-                      // فراخوانی تابع دانلود از داخل پروایدر
+                      FocusScope.of(context).unfocus(); //close keyBoard
+
                       downloadProv.downloadVideo(_controller.text);
                     },
               child: downloadProv.isDownloading
