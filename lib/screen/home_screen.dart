@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:mediaflow/constants/colors.dart';
 import 'package:mediaflow/screen/contact_us_screen.dart';
 import 'package:mediaflow/provider/theme_provider.dart';
 import 'package:mediaflow/provider/download_provider.dart';
@@ -13,7 +14,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  late FocusNode negahban1; 
+  late FocusNode negahban1;
   late TextEditingController _controller;
 
   @override
@@ -44,24 +45,28 @@ class _HomeScreenState extends State<HomeScreen> {
           'mediaflow',
           style: TextStyle(
             color: Colors.white,
-            fontSize: 24,
+            fontSize: 20,
             fontFamily: 'GH',
             fontWeight: FontWeight.bold,
           ),
         ),
         centerTitle: true,
       ),
-      drawer: _buildDrawer(context), 
+      drawer: _buildDrawer(context),
       body: Center(
         child: Column(
           children: [
             const SizedBox(height: 220),
             const Text(
               'please enter video url',
-              style: TextStyle(fontSize: 22, fontFamily: 'GH'),
+              style: TextStyle(
+                fontSize: 18,
+                fontFamily: 'GH',
+                color: CustomColor.blueColor,
+              ),
             ),
             const SizedBox(height: 50),
-            
+
             // TextField
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 40.0),
@@ -81,23 +86,23 @@ class _HomeScreenState extends State<HomeScreen> {
                         )
                       : null,
                   labelStyle: TextStyle(
-                    fontSize: 22,
+                    fontSize: 16,
                     fontFamily: 'GH',
                     color: negahban1.hasFocus
-                        ? const Color.fromARGB(219, 1, 88, 155)
-                        : const Color.fromARGB(255, 0, 0, 0),
+                        ? CustomColor.greenColor
+                        : CustomColor.blueColor,
                   ),
                   enabledBorder: const OutlineInputBorder(
                     borderRadius: BorderRadius.all(Radius.circular(15)),
                     borderSide: BorderSide(
-                      color: Color(0xffC5C5C5),
+                      color: CustomColor.blueColor,
                       width: 4.0,
                     ),
                   ),
                   focusedBorder: const OutlineInputBorder(
                     borderRadius: BorderRadius.all(Radius.circular(15)),
                     borderSide: BorderSide(
-                      color: Color.fromARGB(219, 1, 88, 155),
+                      color: CustomColor.greenColor,
                       width: 4.0,
                     ),
                   ),
@@ -106,22 +111,24 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             const SizedBox(height: 30),
 
-
             Consumer<DownloadProvider>(
               builder: (context, downloadProv, child) {
                 return Column(
                   children: [
                     // Progress Bar Section
-                    if (downloadProv.isDownloading || downloadProv.statusText.isNotEmpty)
+                    if (downloadProv.isDownloading ||
+                        downloadProv.statusText.isNotEmpty)
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 40.0),
                         child: Column(
                           children: [
                             if (downloadProv.isDownloading)
                               LinearProgressIndicator(
-                                value: downloadProv.progress > 0 ? downloadProv.progress : null,
-                                backgroundColor: Colors.grey[300], 
-                                color: const Color.fromARGB(255, 1, 88, 155),
+                                value: downloadProv.progress > 0
+                                    ? downloadProv.progress
+                                    : null,
+                                backgroundColor: Colors.grey[300],
+                                color: CustomColor.blueColor,
                                 minHeight: 10,
                                 borderRadius: BorderRadius.circular(5),
                               ),
@@ -133,32 +140,29 @@ class _HomeScreenState extends State<HomeScreen> {
                                 fontFamily: 'GH',
                                 fontSize: 16,
                                 color: downloadProv.statusText.contains('❌')
-                                    ? Colors.red
-                                    : Colors.white, 
+                                    ? CustomColor.redColor
+                                    : CustomColor.blueColor,
                               ),
                             ),
                           ],
                         ),
                       ),
-                    
+
                     const SizedBox(height: 30),
 
                     // Download Button
-                   // Download / Cancel Button
+                    // Download / Cancel Button
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         minimumSize: const Size(150, 40),
-                        // تغییر رنگ دکمه در حالت دانلود برای تمایز بهتر (اختیاری)
                         backgroundColor: downloadProv.isDownloading
-                            ? Colors.redAccent // رنگ قرمز برای توقف
-                            : const Color.fromARGB(219, 1, 88, 155), // رنگ آبی برای دانلود
+                            ? CustomColor.greenColor
+                            : CustomColor.blueColor,
                       ),
                       onPressed: () {
                         if (downloadProv.isDownloading) {
-                          // اگر در حال دانلود است، کنسل کن
                           downloadProv.cancelDownload();
                         } else {
-                          // اگر دانلود نمیکند، دانلود را شروع کن
                           FocusScope.of(context).unfocus();
                           downloadProv.downloadVideo(_controller.text);
                         }
@@ -171,16 +175,13 @@ class _HomeScreenState extends State<HomeScreen> {
                             const SizedBox(
                               width: 20,
                               height: 20,
-                              child: CircularProgressIndicator(
-                                color: Colors.white,
-                                strokeWidth: 2,
-                              ),
+                              child: Icon(Icons.stop_circle),
                             ),
                             const SizedBox(width: 10),
                             const Text(
                               'Stop', // متن دکمه توقف
                               style: TextStyle(
-                                fontSize: 20,
+                                fontSize: 16,
                                 fontFamily: 'GH',
                                 color: Colors.white,
                               ),
@@ -189,7 +190,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             const Text(
                               'Download', // متن دکمه شروع
                               style: TextStyle(
-                                fontSize: 22,
+                                fontSize: 16,
                                 fontFamily: 'GH',
                                 color: Colors.white,
                               ),
@@ -237,7 +238,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   SizedBox(width: 15),
                   Text(
                     'contact us',
-                    style: TextStyle(fontSize: 22, fontFamily: 'GH'),
+                    style: TextStyle(fontSize: 18, fontFamily: 'GH'),
                   ),
                 ],
               ),
@@ -255,7 +256,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   SizedBox(width: 15),
                   Text(
                     'theme',
-                    style: TextStyle(fontSize: 22, fontFamily: 'GH'),
+                    style: TextStyle(fontSize: 18, fontFamily: 'GH'),
                   ),
                 ],
               ),
@@ -265,7 +266,7 @@ class _HomeScreenState extends State<HomeScreen> {
               padding: EdgeInsets.all(20.0),
               child: Text(
                 'version 1.0.0',
-                style: TextStyle(fontSize: 18, fontFamily: 'GH'),
+                style: TextStyle(fontSize: 15, fontFamily: 'GH'),
               ),
             ),
           ],

@@ -11,7 +11,7 @@ void main() {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => ThemeProvider()),
-        
+
         ChangeNotifierProvider(create: (_) => DownloadProvider()),
       ],
       child: const MyApp(),
@@ -26,10 +26,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       //theme
-      theme: Provider.of<ThemeProvider>(context).themeData,
+      theme: context.watch<ThemeProvider>().themeData,
       title: 'mediaFlow',
       debugShowCheckedModeBanner: false,
-      
       home: const LoadingScreen(),
     );
   }
