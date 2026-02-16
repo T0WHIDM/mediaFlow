@@ -15,7 +15,7 @@ class ContactUsScreen extends StatelessWidget {
           'mediaflow',
           style: TextStyle(
             color: Colors.white,
-            fontSize: 24,
+            fontSize: 20,
             fontFamily: 'GH',
             fontWeight: FontWeight.bold,
           ),
@@ -60,7 +60,7 @@ class ContactUsScreen extends StatelessWidget {
                         '@T0WHID',
                         style: TextStyle(
                           color: Colors.white,
-                          fontSize: 20,
+                          fontSize: 16,
                           fontFamily: 'GH',
                           fontWeight: FontWeight.bold,
                         ),
@@ -81,7 +81,7 @@ class ContactUsScreen extends StatelessWidget {
                         'T0WHIDM',
                         style: TextStyle(
                           color: Colors.white,
-                          fontSize: 20,
+                          fontSize: 16,
                           fontFamily: 'GH',
                           fontWeight: FontWeight.bold,
                         ),
@@ -89,11 +89,11 @@ class ContactUsScreen extends StatelessWidget {
                     ],
                   ),
                 ),
-                 GestureDetector(
+                GestureDetector(
                   onTap: () {
                     MyUrlLauncher.launchLink('mailto:towhidmgholami@gmail.com');
                   },
-                   child: const Row(
+                  child: const Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Icon(Icons.email, color: Colors.white),
@@ -102,14 +102,14 @@ class ContactUsScreen extends StatelessWidget {
                         'towhidmgholami@gmail.com',
                         style: TextStyle(
                           color: Colors.white,
-                          fontSize: 20,
+                          fontSize: 16,
                           fontFamily: 'GH',
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                     ],
-                                   ),
-                 ),
+                  ),
+                ),
               ],
             ),
           ),

@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:mediaflow/constants/colors.dart';
 import 'package:mediaflow/screen/contact_us_screen.dart';
 import 'package:mediaflow/provider/theme_provider.dart';
 import 'package:mediaflow/provider/download_provider.dart';
+import 'package:mediaflow/util/url_luncher.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -13,194 +16,342 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  late FocusNode negahban1; 
+  late FocusNode _focusNode;
   late TextEditingController _controller;
 
   @override
   void initState() {
     super.initState();
-    negahban1 = FocusNode();
+    _focusNode = FocusNode();
     _controller = TextEditingController();
 
-    negahban1.addListener(() {
+    _focusNode.addListener(() {
       setState(() {});
     });
   }
 
   @override
   void dispose() {
-    negahban1.dispose();
+    _focusNode.dispose();
     _controller.dispose();
     super.dispose();
   }
 
+  Future<void> _pasteLink() async {
+    final data = await Clipboard.getData(Clipboard.kTextPlain);
+    if (data != null && data.text != null) {
+      setState(() {
+        _controller.text = data.text!;
+      });
+      FocusScope.of(context).unfocus();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final size = MediaQuery.of(context).size;
+
     return Scaffold(
-      resizeToAvoidBottomInset: false,
-      appBar: AppBar(
-        backgroundColor: const Color.fromARGB(255, 1, 88, 155),
-        title: const Text(
-          'mediaflow',
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 24,
-            fontFamily: 'GH',
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        centerTitle: true,
-      ),
-      drawer: _buildDrawer(context), 
-      body: Center(
-        child: Column(
-          children: [
-            const SizedBox(height: 220),
-            const Text(
-              'please enter video url',
-              style: TextStyle(fontSize: 22, fontFamily: 'GH'),
+      body: SafeArea(
+        child: Scaffold(
+          backgroundColor: Colors.transparent,
+          appBar: AppBar(
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            centerTitle: true,
+            iconTheme: IconThemeData(
+              color: isDark ? Colors.white : CustomColor.blueColor,
             ),
-            const SizedBox(height: 50),
-            
-            // TextField
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 40.0),
-              child: TextField(
-                controller: _controller,
-                focusNode: negahban1,
-                decoration: InputDecoration(
-                  labelText: 'url',
-                  suffixIcon: _controller.text.isNotEmpty
-                      ? IconButton(
-                          icon: const Icon(Icons.clear),
-                          onPressed: () {
-                            _controller.clear();
-                            // برای پاک کردن وضعیت دانلود وقتی متن پاک میشه (اختیاری)
-                            context.read<DownloadProvider>().clearStatus();
-                          },
-                        )
-                      : null,
-                  labelStyle: TextStyle(
-                    fontSize: 22,
-                    fontFamily: 'GH',
-                    color: negahban1.hasFocus
-                        ? const Color.fromARGB(219, 1, 88, 155)
-                        : const Color.fromARGB(255, 0, 0, 0),
-                  ),
-                  enabledBorder: const OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(15)),
-                    borderSide: BorderSide(
-                      color: Color(0xffC5C5C5),
-                      width: 4.0,
-                    ),
-                  ),
-                  focusedBorder: const OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(15)),
-                    borderSide: BorderSide(
-                      color: Color.fromARGB(219, 1, 88, 155),
-                      width: 4.0,
+            title: Text(
+              'MediaFlow',
+              style: TextStyle(
+                color: isDark ? Colors.white : CustomColor.blueColor,
+                fontSize: 22,
+                fontFamily: 'GH',
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+          drawer: _buildModernDrawer(context, isDark),
+          body: SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
+            padding: const EdgeInsets.symmetric(horizontal: 24),
+            child: Column(
+              children: [
+                SizedBox(height: size.height * 0.12),
+                Hero(
+                  tag: 'logo',
+                  child: Material(
+                    color: Colors.transparent,
+                    child: InkWell(
+                      borderRadius: BorderRadius.circular(50),
+                      onTap: () async {
+                        try {
+                          await MyUrlLauncher.launchLink(
+                            'https://www.youtube.com',
+                          );
+                        } catch (e) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('Could not launch YouTube'),
+                              backgroundColor: Colors.red,
+                            ),
+                          );
+                        }
+                      },
+                      child: Container(
+                        height: 100,
+                        width: 100,
+                        decoration: BoxDecoration(
+                          color: CustomColor.blueColor.withValues(alpha: 0.15),
+                          shape: BoxShape.circle,
+                        ),
+                        child: const Center(
+                          child: FaIcon(
+                            FontAwesomeIcons.youtube,
+                            size: 50,
+                            color: CustomColor.redColor,
+                          ),
+                        ),
+                      ),
                     ),
                   ),
                 ),
+
+                const SizedBox(height: 30),
+
+                const Text(
+                  "Video Downloader",
+                  style: TextStyle(
+                    fontFamily: 'GH',
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+
+                const SizedBox(height: 40),
+
+                _buildTextField(isDark),
+
+                const SizedBox(height: 30),
+
+                Consumer<DownloadProvider>(
+                  builder: (context, downloadProv, child) {
+                    return Column(
+                      children: [
+                        if (downloadProv.isDownloading ||
+                            downloadProv.statusText.isNotEmpty)
+                          _buildStatusCard(downloadProv, isDark),
+
+                        const SizedBox(height: 20),
+
+                        _buildMainButton(downloadProv),
+                      ],
+                    );
+                  },
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildTextField(bool isDark) {
+    return Container(
+      decoration: BoxDecoration(
+        color: isDark ? Colors.grey[850] : Colors.white,
+        borderRadius: BorderRadius.circular(15),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.1),
+            blurRadius: 15,
+            offset: const Offset(0, 5),
+          ),
+        ],
+      ),
+      child: TextField(
+        controller: _controller,
+        focusNode: _focusNode,
+        style: const TextStyle(fontFamily: 'GH'),
+        decoration: InputDecoration(
+          hintText: 'Paste video link here...',
+          hintStyle: TextStyle(color: Colors.grey[600], fontFamily: 'GH'),
+          border: InputBorder.none,
+          contentPadding: const EdgeInsets.symmetric(
+            horizontal: 20,
+            vertical: 20,
+          ),
+          suffixIcon: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              if (_controller.text.isNotEmpty)
+                IconButton(
+                  icon: const Icon(Icons.clear, size: 20, color: Colors.grey),
+                  onPressed: () {
+                    _controller.clear();
+                    context.read<DownloadProvider>().clearStatus();
+                  },
+                ),
+              Padding(
+                padding: const EdgeInsets.only(right: 8.0),
+                child: IconButton(
+                  icon: const Icon(Icons.paste, color: CustomColor.greenColor),
+                  tooltip: "Paste",
+                  onPressed: _pasteLink,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildStatusCard(DownloadProvider provider, bool isDark) {
+    return AnimatedContainer(
+      duration: const Duration(seconds: 3),
+      curve: Curves.easeInOut,
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: isDark ? Colors.grey[850] : Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: CustomColor.blueColor.withValues(alpha: 0.1)),
+        boxShadow: [
+          BoxShadow(
+            color: CustomColor.blueColor.withValues(alpha: 0.1),
+            blurRadius: 10,
+            offset: const Offset(0, 5),
+          ),
+        ],
+      ),
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                provider.isDownloading ? "Downloading..." : '',
+                style: const TextStyle(
+                  fontFamily: 'GH',
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              if (provider.isDownloading)
+                Text(
+                  "${(provider.progress * 100).toStringAsFixed(0)}%",
+                  style: const TextStyle(
+                    fontFamily: 'GH',
+                    fontWeight: FontWeight.bold,
+                    color: CustomColor.blueColor,
+                  ),
+                ),
+            ],
+          ),
+
+          if (provider.isDownloading) ...[
+            const SizedBox(height: 10),
+            ClipRRect(
+              borderRadius: BorderRadius.circular(10),
+              child: LinearProgressIndicator(
+                value: provider.progress > 0 ? provider.progress : null,
+                backgroundColor: Colors.grey[200],
+                color: CustomColor.blueColor,
+                minHeight: 8,
               ),
             ),
-            const SizedBox(height: 30),
+          ],
 
+          const SizedBox(height: 10),
+          Text(
+            provider.statusText,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontFamily: 'GH',
+              fontSize: 14,
+              color:
+                  provider.statusText.contains('❌') ||
+                      provider.statusText.contains('⛔')
+                  ? CustomColor.redColor
+                  : (isDark ? Colors.grey[400] : Colors.grey[700]),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 
-            Consumer<DownloadProvider>(
-              builder: (context, downloadProv, child) {
-                return Column(
-                  children: [
-                    // Progress Bar Section
-                    if (downloadProv.isDownloading || downloadProv.statusText.isNotEmpty)
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 40.0),
-                        child: Column(
-                          children: [
-                            if (downloadProv.isDownloading)
-                              LinearProgressIndicator(
-                                value: downloadProv.progress > 0 ? downloadProv.progress : null,
-                                backgroundColor: Colors.grey[300], 
-                                color: const Color.fromARGB(255, 1, 88, 155),
-                                minHeight: 10,
-                                borderRadius: BorderRadius.circular(5),
-                              ),
-                            const SizedBox(height: 10),
-                            Text(
-                              downloadProv.statusText,
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontFamily: 'GH',
-                                fontSize: 16,
-                                color: downloadProv.statusText.contains('❌')
-                                    ? Colors.red
-                                    : Colors.white, 
-                              ),
-                            ),
-                          ],
-                        ),
+  Widget _buildMainButton(DownloadProvider provider) {
+    return SizedBox(
+      width: double.infinity,
+      height: 55,
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: provider.isDownloading
+              ? CustomColor.redColor
+              : CustomColor.blueColor,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15),
+          ),
+          elevation: 5,
+          shadowColor:
+              (provider.isDownloading
+                      ? CustomColor.redColor
+                      : CustomColor.blueColor)
+                  .withOpacity(0.4),
+        ),
+        onPressed: () {
+          if (provider.isDownloading) {
+            provider.cancelDownload();
+          } else {
+            if (_controller.text.trim().isEmpty) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: const Row(
+                    children: [
+                      Icon(Icons.error_outline, color: Colors.white),
+                      SizedBox(width: 10),
+                      Text(
+                        'Please enter a link first!',
+                        style: TextStyle(fontFamily: 'GH', color: Colors.white),
                       ),
-                    
-                    const SizedBox(height: 30),
+                    ],
+                  ),
+                  backgroundColor: CustomColor.redColor,
+                  behavior: SnackBarBehavior.floating,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  duration: const Duration(seconds: 2),
+                ),
+              );
+              return;
+            }
 
-                    // Download Button
-                   // Download / Cancel Button
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        minimumSize: const Size(150, 40),
-                        // تغییر رنگ دکمه در حالت دانلود برای تمایز بهتر (اختیاری)
-                        backgroundColor: downloadProv.isDownloading
-                            ? Colors.redAccent // رنگ قرمز برای توقف
-                            : const Color.fromARGB(219, 1, 88, 155), // رنگ آبی برای دانلود
-                      ),
-                      onPressed: () {
-                        if (downloadProv.isDownloading) {
-                          // اگر در حال دانلود است، کنسل کن
-                          downloadProv.cancelDownload();
-                        } else {
-                          // اگر دانلود نمیکند، دانلود را شروع کن
-                          FocusScope.of(context).unfocus();
-                          downloadProv.downloadVideo(_controller.text);
-                        }
-                      },
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          // تغییر آیکون و متن بر اساس وضعیت
-                          if (downloadProv.isDownloading) ...[
-                            const SizedBox(
-                              width: 20,
-                              height: 20,
-                              child: CircularProgressIndicator(
-                                color: Colors.white,
-                                strokeWidth: 2,
-                              ),
-                            ),
-                            const SizedBox(width: 10),
-                            const Text(
-                              'Stop', // متن دکمه توقف
-                              style: TextStyle(
-                                fontSize: 20,
-                                fontFamily: 'GH',
-                                color: Colors.white,
-                              ),
-                            ),
-                          ] else ...[
-                            const Text(
-                              'Download', // متن دکمه شروع
-                              style: TextStyle(
-                                fontSize: 22,
-                                fontFamily: 'GH',
-                                color: Colors.white,
-                              ),
-                            ),
-                          ],
-                        ],
-                      ),
-                    ),
-                  ],
-                );
-              },
+            FocusScope.of(context).unfocus();
+            provider.downloadVideo(_controller.text);
+          }
+        },
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              provider.isDownloading
+                  ? Icons.stop_circle_outlined
+                  : Icons.download_rounded,
+              color: Colors.white,
+            ),
+            const SizedBox(width: 10),
+            Text(
+              provider.isDownloading ? 'Cancel Download' : 'Start Download',
+              style: const TextStyle(
+                fontSize: 18,
+                fontFamily: 'GH',
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
             ),
           ],
         ),
@@ -208,68 +359,103 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _buildDrawer(BuildContext context) {
+  Widget _buildModernDrawer(BuildContext context, bool isDark) {
     return Drawer(
-      child: Center(
-        child: Column(
-          children: [
-            const SizedBox(height: 100),
-            const CircleAvatar(
-              radius: 70,
-              backgroundImage: AssetImage('assets/images/flutterflow.jpg'),
+      backgroundColor: isDark ? const Color(0xFF1E1E1E) : Colors.white,
+      child: Column(
+        children: [
+          UserAccountsDrawerHeader(
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  Color.fromARGB(255, 1, 20, 41),
+                  Color.fromARGB(255, 27, 87, 176),
+                ],
+                begin: Alignment.centerLeft,
+                end: Alignment.centerRight,
+              ),
             ),
-            const SizedBox(height: 70),
-            GestureDetector(
-              onTap: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) {
-                      return const ContactUsScreen();
+            accountName: const Text(
+              "MediaFlow",
+              style: TextStyle(
+                fontFamily: 'GH',
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            accountEmail: const Text(
+              "v1.0.0",
+              style: TextStyle(
+                fontFamily: 'GH',
+                color: Colors.white70,
+                fontSize: 12,
+              ),
+            ),
+            currentAccountPicture: Container(
+              padding: const EdgeInsets.all(1),
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                shape: BoxShape.circle,
+              ),
+              child: const CircleAvatar(
+                backgroundImage: AssetImage('assets/images/flutterflow.jpg'),
+              ),
+            ),
+          ),
+          ListTile(
+            leading: const FaIcon(
+              FontAwesomeIcons.telegram,
+              color: CustomColor.blueColor,
+            ),
+            title: const Text(
+              'Contact Us',
+              style: TextStyle(fontFamily: 'GH', fontSize: 15),
+            ),
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => const ContactUsScreen(),
+                ),
+              );
+            },
+          ),
+          Consumer<ThemeProvider>(
+            builder: (context, themeProv, child) {
+              return ListTile(
+                contentPadding: const EdgeInsets.symmetric(horizontal: 16),
+                leading: FaIcon(
+                  isDark ? FontAwesomeIcons.moon : Icons.sunny,
+                  color: isDark ? Colors.grey : Colors.orange,
+                  size: 25,
+                ),
+                title: const Text(
+                  'switch theme',
+                  style: TextStyle(fontFamily: 'GH', fontSize: 15),
+                ),
+                trailing: Transform.scale(
+                  scale: 0.6,
+                  child: Switch(
+                    value: isDark,
+                    activeThumbColor: CustomColor.blueColor,
+                    onChanged: (val) {
+                      themeProv.toggleTheme();
                     },
                   ),
-                );
-              },
-              child: const Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  SizedBox(width: 30),
-                  FaIcon(FontAwesomeIcons.telegram),
-                  SizedBox(width: 15),
-                  Text(
-                    'contact us',
-                    style: TextStyle(fontSize: 22, fontFamily: 'GH'),
-                  ),
-                ],
-              ),
+                ),
+                
+              );
+            },
+          ),
+          const Spacer(),
+          Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Text(
+              'Designed with ❤️',
+              style: TextStyle(fontFamily: 'GH', color: Colors.grey[500]),
             ),
-            const SizedBox(height: 50),
-            GestureDetector(
-              onTap: () {
-                context.read<ThemeProvider>().toggleTheme();
-              },
-              child: const Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  SizedBox(width: 30),
-                  FaIcon(FontAwesomeIcons.moon),
-                  SizedBox(width: 15),
-                  Text(
-                    'theme',
-                    style: TextStyle(fontSize: 22, fontFamily: 'GH'),
-                  ),
-                ],
-              ),
-            ),
-            const Spacer(),
-            const Padding(
-              padding: EdgeInsets.all(20.0),
-              child: Text(
-                'version 1.0.0',
-                style: TextStyle(fontSize: 18, fontFamily: 'GH'),
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

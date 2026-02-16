@@ -10,7 +10,6 @@ class DownloadProvider extends ChangeNotifier {
   bool _isDownloading = false;
   double _progress = 0.0;
   String _statusText = "";
-  
   CancelToken? _cancelToken;
 
   bool get isDownloading => _isDownloading;
@@ -29,7 +28,6 @@ class DownloadProvider extends ChangeNotifier {
       _isDownloading = true;
       _statusText = "Analyzing video...";
       _progress = 0.0;
-      
       _cancelToken = CancelToken();
       notifyListeners();
 
@@ -82,15 +80,26 @@ class DownloadProvider extends ChangeNotifier {
     }
   }
 
+  //تابع برای کنسل کردن دانلود
   void cancelDownload() {
     if (_cancelToken != null && !_cancelToken!.isCancelled) {
       _cancelToken!.cancel("User cancelled download");
-      _isDownloading = false;
-      notifyListeners();
     }
+
+    _isDownloading = false;
+    _statusText = "Download Cancelled ⛔";
+    notifyListeners();
+
+    Future.delayed(const Duration(seconds: 3), () {
+      if (!_isDownloading) {
+        _statusText = "";
+        _progress = 0.0;
+        notifyListeners();
+      }
+    });
   }
 
-  
+  //تابع برای دسترسی به حافظه
   Future<bool> _requestPermission() async {
     if (Platform.isAndroid) {
       final androidInfo = await DeviceInfoPlugin().androidInfo;
@@ -107,6 +116,7 @@ class DownloadProvider extends ChangeNotifier {
     return true;
   }
 
+  //تابع برای ذخیره مسیر ویدئو
   Future<String> _getFilePath(String title) async {
     String cleanTitle = title.replaceAll(RegExp(r'[\\/:*?"<>|]'), '');
     Directory? directory;
