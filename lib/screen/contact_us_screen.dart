@@ -89,11 +89,11 @@ class ContactUsScreen extends StatelessWidget {
                     ],
                   ),
                 ),
-                 GestureDetector(
+                GestureDetector(
                   onTap: () {
                     MyUrlLauncher.launchLink('mailto:towhidmgholami@gmail.com');
                   },
-                   child: const Row(
+                  child: const Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Icon(Icons.email, color: Colors.white),
@@ -108,8 +108,8 @@ class ContactUsScreen extends StatelessWidget {
                         ),
                       ),
                     ],
-                                   ),
-                 ),
+                  ),
+                ),
               ],
             ),
           ),
