@@ -37,8 +37,7 @@ To run this project locally, follow these steps:
    
 4. **Run the app**:
    ```bash
-      flutter run
-     
+      flutter run     
 ⚠️ Disclaimer
 This project is developed strictly for educational purposes. The main goal is to demonstrate how to handle file downloads and streams in Flutter.
 
