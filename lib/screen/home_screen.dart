@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:mediaflow/constants/colors.dart';
-import 'package:mediaflow/screen/contact_us_screen.dart';
+import 'package:mediaflow/screen/about_screen.dart';
 import 'package:mediaflow/provider/theme_provider.dart';
 import 'package:mediaflow/provider/download_provider.dart';
 import 'package:mediaflow/util/url_luncher.dart';
 import 'package:provider/provider.dart';
+import 'package:share_plus/share_plus.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -146,7 +147,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
                         const SizedBox(height: 20),
 
-                        _buildMainButton(downloadProv),
+                        _buildMainButton(downloadProv, isDark),
                       ],
                     );
                   },
@@ -198,7 +199,12 @@ class _HomeScreenState extends State<HomeScreen> {
               Padding(
                 padding: const EdgeInsets.only(right: 8.0),
                 child: IconButton(
-                  icon: const Icon(Icons.paste, color: CustomColor.greenColor),
+                  icon: Icon(
+                    Icons.paste,
+                    color: isDark
+                        ? CustomColor.greenColor
+                        : CustomColor.blueColor,
+                  ),
                   tooltip: "Paste",
                   onPressed: _pasteLink,
                 ),
@@ -283,7 +289,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _buildMainButton(DownloadProvider provider) {
+  Widget _buildMainButton(DownloadProvider provider, bool isDark) {
     return SizedBox(
       width: double.infinity,
       height: 55,
@@ -291,6 +297,8 @@ class _HomeScreenState extends State<HomeScreen> {
         style: ElevatedButton.styleFrom(
           backgroundColor: provider.isDownloading
               ? CustomColor.redColor
+              : isDark
+              ? CustomColor.greenColor
               : CustomColor.blueColor,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(15),
@@ -367,10 +375,7 @@ class _HomeScreenState extends State<HomeScreen> {
           UserAccountsDrawerHeader(
             decoration: const BoxDecoration(
               gradient: LinearGradient(
-                colors: [
-                  Color.fromARGB(255, 1, 20, 41),
-                  Color.fromARGB(255, 27, 87, 176),
-                ],
+                colors: [CustomColor.greenColor, CustomColor.blueColor],
                 begin: Alignment.centerLeft,
                 end: Alignment.centerRight,
               ),
@@ -403,19 +408,19 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
           ListTile(
-            leading: const FaIcon(
-              FontAwesomeIcons.telegram,
-              color: CustomColor.blueColor,
+            leading: FaIcon(
+              FontAwesomeIcons.solidCircleQuestion,
+              color: isDark ? CustomColor.greenColor : CustomColor.blueColor,
             ),
             title: const Text(
-              'Contact Us',
+              'about',
               style: TextStyle(fontFamily: 'GH', fontSize: 15),
             ),
             onTap: () {
               Navigator.pop(context);
               Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (context) => const ContactUsScreen(),
+                  builder: (context) => const AboutScreen(),
                 ),
               );
             },
@@ -425,13 +430,13 @@ class _HomeScreenState extends State<HomeScreen> {
               return ListTile(
                 contentPadding: const EdgeInsets.symmetric(horizontal: 16),
                 leading: FaIcon(
-                  isDark ? FontAwesomeIcons.moon : Icons.sunny,
-                  color: isDark ? Colors.grey : Colors.orange,
+                  isDark ? Icons.sunny : FontAwesomeIcons.moon,
+                  color: isDark ? Colors.orange : CustomColor.blueColor,
                   size: 25,
                 ),
-                title: const Text(
-                  'switch theme',
-                  style: TextStyle(fontFamily: 'GH', fontSize: 15),
+                title: Text(
+                  isDark ? 'light mode' : 'dark mode',
+                  style: const TextStyle(fontFamily: 'GH', fontSize: 15),
                 ),
                 trailing: Transform.scale(
                   scale: 0.6,
@@ -443,7 +448,28 @@ class _HomeScreenState extends State<HomeScreen> {
                     },
                   ),
                 ),
-                
+              );
+            },
+          ),
+          ListTile(
+            contentPadding: const EdgeInsets.symmetric(horizontal: 16),
+            leading: FaIcon(
+              FontAwesomeIcons.shareNodes,
+              size: 25,
+              color: isDark ? CustomColor.greenColor : CustomColor.blueColor,
+            ),
+            title: const Text(
+              'share',
+              style: TextStyle(fontFamily: 'GH', fontSize: 15),
+            ),
+            onTap: () async {
+              await SharePlus.instance.share(
+                ShareParams(
+                  text: '''"Download youtube videos fast with MediaFlow! 🚀
+
+
+[https://github.com/T0WHIDM/mediaFlow/releases/download/v1.0.0/mediaflow.apk]"''',
+                ),
               );
             },
           ),
