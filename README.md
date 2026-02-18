@@ -4,7 +4,7 @@
 ![Dart](https://img.shields.io/badge/dart-%230175C2.svg?style=for-the-badge&logo=dart&logoColor=white)
 ![License](https://img.shields.io/github/license/T0WHIDM/mediaFlow?style=for-the-badge)
 
-**MediaFlow** is a sleek and efficient mobile application built with Flutter that allows users to download videos directly from URLs. Designed for simplicity and speed.
+**MediaFlow** is a sleek and efficient mobile application built with Flutter that allows users to download videos directly from YouTube. Designed for simplicity and speed.
 
 ## ✨ Features
 
