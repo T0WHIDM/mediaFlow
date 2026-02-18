@@ -41,7 +41,7 @@ To run this project locally, follow these steps:
 ⚠️ Disclaimer
 This project is developed strictly for educational purposes. The main goal is to demonstrate how to handle file downloads and streams in Flutter.
 
-The author (T0WHIDM) is not responsible for how this application is used.
+The author (T0WHID) is not responsible for how this application is used.
 
 Users are responsible for adhering to the Terms of Service of the websites they download from.
 
@@ -50,4 +50,4 @@ Do not use this software to infringe on copyright laws.
 🤝 Contributing
 Contributions are welcome! If you have any ideas or bug fixes, feel free to open an issue or submit a pull request.
 
-Made with ❤️ by T0WHIDM
+Made with ❤️ by T0WHID
