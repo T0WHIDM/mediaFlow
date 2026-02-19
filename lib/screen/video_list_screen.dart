@@ -44,7 +44,7 @@ class VideoListScreen extends StatelessWidget {
                   );
                 },
               ),
-              const SliverPadding(padding: EdgeInsetsGeometry.only(top: 50)),
+              const SliverPadding(padding: EdgeInsetsGeometry.only(top: 40)),
             ],
           ),
         ),
@@ -60,32 +60,34 @@ class VideoItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      leading: InkWell(
-        onTap: () {},
-        child: Container(
-          width: 100,
-          height: 150,
-          decoration: const BoxDecoration(
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+      child: Row(
+        children: [
+          Material(
             color: CustomColor.greenColor,
-            borderRadius: BorderRadius.all(Radius.circular(15)),
+            borderRadius: BorderRadius.circular(15),
+            child: InkWell(
+              onTap: () {},
+              borderRadius: BorderRadius.circular(15),
+              child: const SizedBox(
+                width: 100,
+                height: 100,
+                child: Center(child: FaIcon(FontAwesomeIcons.play)),
+              ),
+            ),
           ),
-          child: const Center(child: FaIcon(FontAwesomeIcons.play),),
-        ),
-      ),
-      titleTextStyle: TextStyle(
-        color: isDark ? Colors.white : CustomColor.blueColor,
-        fontSize: 16,
-        fontFamily: 'GH',
-        fontWeight: FontWeight.w400,
-      ),
-      title: const Padding(
-        padding: EdgeInsets.only(left: 15.0),
-        child: Text('this is test', style: TextStyle(color: Colors.white)),
-      ),
-      trailing: Icon(
-        Icons.more_vert_outlined,
-        color: isDark ? CustomColor.greenColor : CustomColor.blueColor,
+          const Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [Text('عنوان ویدیو')],
+            ),
+          ),
+          Icon(
+            Icons.more_vert_outlined,
+            color: isDark ? CustomColor.greenColor : CustomColor.blueColor,
+          ),
+        ],
       ),
     );
   }
