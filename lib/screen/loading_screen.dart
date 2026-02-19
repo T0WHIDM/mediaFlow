@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:mediaflow/screen/home_screen.dart';
+import 'package:mediaflow/screen/dash_board_screen.dart';
 
 class LoadingScreen extends StatelessWidget {
   const LoadingScreen({super.key});
@@ -27,7 +27,7 @@ class _LoadingState extends State<Loading> {
         context,
         MaterialPageRoute(
           builder: (context) {
-            return const HomeScreen();
+            return const DashBoardScreen();
           },
         ),
       );
