@@ -23,14 +23,16 @@ class _LoadingState extends State<Loading> {
   void initState() {
     super.initState();
     Future.delayed(const Duration(seconds: 2), () {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) {
-            return const DashBoardScreen();
-          },
-        ),
-      );
+      if (mounted) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) {
+              return const DashBoardScreen();
+            },
+          ),
+        );
+      }
     });
   }
 

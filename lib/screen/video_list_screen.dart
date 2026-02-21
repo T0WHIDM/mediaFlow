@@ -14,6 +14,8 @@ class VideoListScreen extends StatefulWidget {
 }
 
 class _VideoListScreenState extends State<VideoListScreen> {
+  late TextEditingController myController;
+
   @override
   void initState() {
     super.initState();
@@ -21,6 +23,7 @@ class _VideoListScreenState extends State<VideoListScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       context.read<DownloadProvider>().loadDownloadedFiles();
     });
+    myController = TextEditingController();
   }
 
   @override
@@ -56,8 +59,59 @@ class _VideoListScreenState extends State<VideoListScreen> {
                 ),
               ),
               const SliverPadding(padding: EdgeInsetsGeometry.only(top: 15)),
+              SliverToBoxAdapter(
+                child: Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 16),
+                  height: 40,
+                  decoration: BoxDecoration(
+                    borderRadius: const BorderRadius.all(Radius.circular(12)),
+                    color: isDark ? Colors.grey[850] : Colors.white,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withValues(alpha: 0.1),
+                        blurRadius: 15,
+                        offset: const Offset(0, 5),
+                      ),
+                    ],
+                  ),
 
-              // استفاده از Consumer برای دسترسی به لیست فایل‌ها از Provider
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      children: [
+                        const SizedBox(width: 10),
+                        const FaIcon(
+                          FontAwesomeIcons.magnifyingGlass,
+                          size: 22,
+                        ),
+                        const SizedBox(width: 5),
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 8.0),
+                            child: TextField(
+                              controller: myController,
+                              decoration: InputDecoration(
+                                border: const OutlineInputBorder(
+                                  borderSide: BorderSide.none,
+                                ),
+
+                                hintText: 'Search',
+                                hintStyle: TextStyle(
+                                  color: Colors.grey[600],
+                                  fontSize: 16,
+                                  fontFamily: 'GH',
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              const SliverPadding(padding: EdgeInsetsGeometry.only(top: 15)),
+
               Consumer<DownloadProvider>(
                 builder: (context, provider, child) {
                   // حالت خالی بودن لیست
