@@ -25,7 +25,6 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      //theme
       theme: context.watch<ThemeProvider>().themeData,
       title: 'mediaFlow',
       debugShowCheckedModeBanner: false,

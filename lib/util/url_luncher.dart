@@ -4,8 +4,10 @@ class MyUrlLauncher {
   static Future<void> launchLink(String urlString) async {
     final Uri url = Uri.parse(urlString);
 
-    if (!await launchUrl(url, mode: LaunchMode.externalApplication)) {
-      throw Exception("Could not launch $url");
+    try {
+      await launchUrl(url, mode: LaunchMode.externalApplication);
+    } catch (e) {
+      throw Exception('Could not launch $urlString');
     }
   }
 }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:mediaflow/constants/colors.dart'; // فرض بر این است که این فایل را دارید
+import 'package:mediaflow/constants/colors.dart'; 
 import 'package:mediaflow/screen/home_screen.dart';
 import 'package:mediaflow/screen/video_list_screen.dart';
 
@@ -23,7 +23,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
     return Scaffold(
       body: IndexedStack(index: _selectedIndex, children: _screens),
       bottomNavigationBar: BottomNavigationBar(
-        iconSize: 20,
+        iconSize: 24,
         currentIndex: _selectedIndex,
         onTap: (int index) {
           setState(() {
