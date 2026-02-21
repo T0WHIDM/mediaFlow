@@ -12,15 +12,12 @@ class DownloadProvider extends ChangeNotifier {
   String _statusText = "";
   CancelToken? _cancelToken;
 
-  // لیست فایل‌های دانلود شده
   List<FileSystemEntity> _downloadedFiles = [];
 
   bool get isDownloading => _isDownloading;
   double get progress => _progress;
   String get statusText => _statusText;
   List<FileSystemEntity> get downloadedFiles => _downloadedFiles;
-
-  // --- متدهای دانلود ---
 
   Future<void> downloadVideo(String url) async {
     if (url.isEmpty) {
@@ -47,7 +44,6 @@ class DownloadProvider extends ChangeNotifier {
 
         if (_cancelToken!.isCancelled) return;
 
-        // دریافت مسیر فایل
         Directory? dir = await _getDownloadDirectory();
         if (dir == null) throw Exception("Storage not accessible");
 
@@ -78,14 +74,11 @@ class DownloadProvider extends ChangeNotifier {
           _progress = 0.0;
         } else {
           _statusText = " Error: Invalid link or connection ❌";
-          debugPrint("Download Error: $e");
         }
       } finally {
         yt.close();
         _isDownloading = false;
         _cancelToken = null;
-
-        // مهم: آپدیت کردن لیست فایل‌ها بعد از اتمام کار
         await loadDownloadedFiles();
 
         notifyListeners();
@@ -114,59 +107,51 @@ class DownloadProvider extends ChangeNotifier {
     });
   }
 
-  // --- متدهای مدیریت فایل (جدید) ---
-
-  // بارگذاری لیست فایل‌ها
-Future<void> loadDownloadedFiles() async {
-    // بررسی دسترسی بر اساس نسخه اندروید
+  Future<void> loadDownloadedFiles() async {
     bool hasAccess = false;
     if (Platform.isAndroid) {
-       final info = await DeviceInfoPlugin().androidInfo;
-       if (info.version.sdkInt >= 30) {
-         hasAccess = await Permission.manageExternalStorage.isGranted;
-       } else {
-         hasAccess = await Permission.storage.isGranted;
-       }
+      final info = await DeviceInfoPlugin().androidInfo;
+      if (info.version.sdkInt >= 30) {
+        hasAccess = await Permission.manageExternalStorage.isGranted;
+      } else {
+        hasAccess = await Permission.storage.isGranted;
+      }
     }
 
-    if (!hasAccess) return; // اگر دسترسی نداشت، ادامه نده
+    if (!hasAccess) return;
 
-  try {
-    final directory = await _getDownloadDirectory();
+    try {
+      final directory = await _getDownloadDirectory();
 
-    if (directory != null && await directory.exists()) {
-      final files = directory
-          .listSync()
-          .where((file) => file.path.toLowerCase().endsWith('.mp4'))
-          .toList();
+      if (directory != null && await directory.exists()) {
+        final files = directory
+            .listSync()
+            .where((file) => file.path.toLowerCase().endsWith('.mp4'))
+            .toList();
 
-      // مرتب‌سازی بر اساس تاریخ (جدیدترین‌ها اول)
-      files.sort(
-        (a, b) => b.statSync().modified.compareTo(a.statSync().modified),
-      );
+        // مرتب‌سازی بر اساس تاریخ (جدیدترین‌ها اول)
+        files.sort(
+          (a, b) => b.statSync().modified.compareTo(a.statSync().modified),
+        );
 
-      _downloadedFiles = files;
-      notifyListeners();
+        _downloadedFiles = files;
+        notifyListeners();
+      }
+    } catch (e) {
+      debugPrint("Error loading files: $e");
     }
-  } catch (e) {
-    debugPrint("Error loading files: $e");
   }
-}
 
-// حذف فایل
-Future<void> deleteVideo(File file) async {
+  Future<void> deleteVideo(File file) async {
     try {
       if (await file.exists()) {
         await file.delete();
-        // رفرش کردن لیست بعد از حذف
         await loadDownloadedFiles();
       }
     } catch (e) {
       debugPrint("Error deleting file: $e");
     }
   }
-
-  // --- توابع کمکی ---
 
   Future<bool> _requestPermission() async {
     if (Platform.isAndroid) {
@@ -179,9 +164,6 @@ Future<void> deleteVideo(File file) async {
         if (!status.isGranted) {
           status = await Permission.manageExternalStorage.request();
         }
-
-        // نکته: در برخی گوشی‌ها request() دیالوگ باز نمی‌کند و باید کاربر را به تنظیمات بفرستید
-        // اما فعلا همین کافیست.
         return status.isGranted;
       }
       // برای اندروید ۱۰ و پایین‌تر
@@ -196,7 +178,6 @@ Future<void> deleteVideo(File file) async {
     return true;
   }
 
-  // تابع یکپارچه برای گرفتن مسیر دانلود
   Future<Directory?> _getDownloadDirectory() async {
     if (Platform.isAndroid) {
       Directory dir = Directory('/storage/emulated/0/Download');

@@ -35,7 +35,7 @@ class _VideoListScreenState extends State<VideoListScreen> {
       body: SafeArea(
         child: RefreshIndicator(
           onRefresh: () async {
-            await context.read<DownloadProvider>().loadDownloadedFiles();
+            await context.watch<DownloadProvider>().loadDownloadedFiles();
           },
           color: CustomColor.blueColor,
           child: CustomScrollView(
@@ -114,7 +114,6 @@ class _VideoListScreenState extends State<VideoListScreen> {
 
               Consumer<DownloadProvider>(
                 builder: (context, provider, child) {
-                  // حالت خالی بودن لیست
                   if (provider.downloadedFiles.isEmpty) {
                     return SliverFillRemaining(
                       hasScrollBody: false,
@@ -146,7 +145,6 @@ class _VideoListScreenState extends State<VideoListScreen> {
                     );
                   }
 
-                  // حالت نمایش لیست
                   return SliverList.builder(
                     itemCount: provider.downloadedFiles.length,
                     itemBuilder: (context, index) {
@@ -176,7 +174,6 @@ class _VideoListScreenState extends State<VideoListScreen> {
     );
   }
 
-  // دیالوگ تایید حذف
   void _showDeleteConfirmDialog(
     BuildContext context,
     File file,
@@ -210,10 +207,15 @@ class _VideoListScreenState extends State<VideoListScreen> {
           TextButton(
             onPressed: () {
               Navigator.of(ctx).pop();
-              provider.deleteVideo(file); // حذف از طریق Provider
+              provider.deleteVideo(file);
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(
-                  content: Text("Video deleted successfully"),
+                  content: Text(
+                    "Video deleted successfully",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  backgroundColor: Colors.red,
+                  behavior: SnackBarBehavior.floating,
                   duration: Duration(seconds: 2),
                 ),
               );
@@ -279,12 +281,18 @@ class VideoItem extends StatelessWidget {
               borderRadius: BorderRadius.circular(12),
               child: InkWell(
                 onTap: () {
-                  // تلاش برای باز کردن فایل با پلیر گوشی
                   try {
                     OpenFile.open(file.path);
                   } catch (e) {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text("Cannot open video player")),
+                      const SnackBar(
+                        backgroundColor: Colors.red,
+                        behavior: SnackBarBehavior.floating,
+                        content: Text(
+                          "Cannot open video player",
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ),
                     );
                   }
                 },

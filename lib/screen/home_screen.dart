@@ -97,6 +97,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             const SnackBar(
                               content: Text('Could not launch YouTube'),
                               backgroundColor: Colors.red,
+                              behavior: SnackBarBehavior.floating,
                             ),
                           );
                         }
@@ -419,9 +420,7 @@ class _HomeScreenState extends State<HomeScreen> {
             onTap: () {
               Navigator.pop(context);
               Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => const AboutScreen(),
-                ),
+                MaterialPageRoute(builder: (context) => const AboutScreen()),
               );
             },
           ),
