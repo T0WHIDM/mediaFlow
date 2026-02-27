@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:mediaflow/core/routing/router.dart';
 import 'package:mediaflow/provider/download_provider.dart';
 import 'package:mediaflow/provider/theme_provider.dart';
-import 'package:mediaflow/screen/loading_screen.dart';
 import 'package:provider/provider.dart';
 
 void main() {

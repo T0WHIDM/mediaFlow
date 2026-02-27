@@ -1,7 +1,9 @@
 import 'package:go_router/go_router.dart';
-import 'package:mediaflow/screen/about_screen.dart';
-import 'package:mediaflow/screen/dash_board_screen.dart';
+import 'package:mediaflow/screen/navigator_sell.dart';
+import 'package:mediaflow/screen/home_screen.dart';
 import 'package:mediaflow/screen/loading_screen.dart';
+import 'package:mediaflow/screen/video_list_screen.dart';
+import 'package:mediaflow/screen/about_screen.dart';
 
 final appGlobalRouter = GoRouter(
   debugLogDiagnostics: true,
@@ -12,15 +14,37 @@ final appGlobalRouter = GoRouter(
       name: LoadingScreen.routeName,
       builder: (context, state) => const LoadingScreen(),
     ),
+
     GoRoute(
-      path: '/dash_board_screen',
-      name: DashBoardScreen.routeName,
-      builder: (context, state) => const DashBoardScreen(),
-    ),
-    GoRoute(
-      path: '/about_screen',
+      path: '/about',
       name: AboutScreen.routeName,
       builder: (context, state) => const AboutScreen(),
+    ),
+
+    StatefulShellRoute.indexedStack(
+      builder: (context, state, navigationShell) {
+        return NavigatorShell(navigationShell: navigationShell);
+      },
+      branches: [
+        StatefulShellBranch(
+          routes: [
+            GoRoute(
+              path: '/home',
+              name: HomeScreen.routeName,
+              builder: (context, state) => const HomeScreen(),
+            ),
+          ],
+        ),
+        StatefulShellBranch(
+          routes: [
+            GoRoute(
+              path: '/downloads',
+              name: VideoListScreen.routeName,
+              builder: (context, state) => const VideoListScreen(),
+            ),
+          ],
+        ),
+      ],
     ),
   ],
 );

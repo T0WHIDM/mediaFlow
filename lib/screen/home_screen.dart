@@ -6,7 +6,7 @@ import 'package:mediaflow/core/constants/colors.dart';
 import 'package:mediaflow/screen/about_screen.dart';
 import 'package:mediaflow/provider/theme_provider.dart';
 import 'package:mediaflow/provider/download_provider.dart';
-import 'package:mediaflow/util/url_luncher.dart';
+import 'package:mediaflow/core/util/url_luncher.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
 
@@ -15,6 +15,8 @@ class HomeScreen extends StatefulWidget {
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
+  
+  static String get routeName => 'home';
 }
 
 class _HomeScreenState extends State<HomeScreen> {
@@ -420,7 +422,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             onTap: () {
               Navigator.pop(context);
-              context.goNamed(AboutScreen.routeName);
+              context.pushNamed(AboutScreen.routeName);
             },
           ),
           Consumer<ThemeProvider>(

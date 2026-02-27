@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:go_router/go_router.dart';
 import 'package:mediaflow/core/constants/colors.dart';
-import 'package:mediaflow/screen/dash_board_screen.dart';
-import 'package:mediaflow/util/url_luncher.dart';
+import 'package:mediaflow/core/util/url_luncher.dart';
 
 class AboutScreen extends StatelessWidget {
   const AboutScreen({super.key});
@@ -31,12 +29,6 @@ class AboutScreen extends StatelessWidget {
             fontFamily: 'GH',
             fontWeight: FontWeight.bold,
           ),
-        ),
-        leading: IconButton(
-          onPressed: () {
-            context.goNamed(DashBoardScreen.routeName);
-          },
-          icon: const FaIcon(FontAwesomeIcons.arrowLeft),
         ),
       ),
       body: Padding(
