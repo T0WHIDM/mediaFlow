@@ -23,7 +23,7 @@ final appGlobalRouter = GoRouter(
 
     StatefulShellRoute.indexedStack(
       builder: (context, state, navigationShell) {
-        return NavigatorSell(navigationShell: navigationShell);
+        return NavigatorShell(navigationShell: navigationShell);
       },
       branches: [
         StatefulShellBranch(

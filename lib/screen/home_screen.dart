@@ -422,7 +422,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             onTap: () {
               Navigator.pop(context);
-              context.goNamed(AboutScreen.routeName);
+              context.pushNamed(AboutScreen.routeName);
             },
           ),
           Consumer<ThemeProvider>(

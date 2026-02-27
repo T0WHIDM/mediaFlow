@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:go_router/go_router.dart';
 import 'package:mediaflow/core/constants/colors.dart';
-import 'package:mediaflow/screen/home_screen.dart';
-import 'package:mediaflow/screen/navigator_sell.dart';
 import 'package:mediaflow/core/util/url_luncher.dart';
 
 class AboutScreen extends StatelessWidget {
@@ -32,12 +29,6 @@ class AboutScreen extends StatelessWidget {
             fontFamily: 'GH',
             fontWeight: FontWeight.bold,
           ),
-        ),
-        leading: IconButton(
-          onPressed: () {
-            context.goNamed(HomeScreen.routeName);
-          },
-          icon: const FaIcon(FontAwesomeIcons.arrowLeft,size: 22,),
         ),
       ),
       body: Padding(
