@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:go_router/go_router.dart';
 import 'package:mediaflow/screen/dash_board_screen.dart';
 
 class LoadingScreen extends StatelessWidget {
@@ -9,6 +10,8 @@ class LoadingScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return const Loading();
   }
+
+  static String get routeName => 'loading';
 }
 
 class Loading extends StatefulWidget {
@@ -24,14 +27,7 @@ class _LoadingState extends State<Loading> {
     super.initState();
     Future.delayed(const Duration(seconds: 2), () {
       if (mounted) {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) {
-              return const DashBoardScreen();
-            },
-          ),
-        );
+        context.goNamed(DashBoardScreen.routeName);
       }
     });
   }

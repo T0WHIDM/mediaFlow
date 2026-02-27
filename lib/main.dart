@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mediaflow/core/routing/router.dart';
 import 'package:mediaflow/provider/download_provider.dart';
 import 'package:mediaflow/provider/theme_provider.dart';
 import 'package:mediaflow/screen/loading_screen.dart';
@@ -24,15 +25,11 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
       theme: context.watch<ThemeProvider>().themeData,
       title: 'mediaFlow',
       debugShowCheckedModeBanner: false,
-      home: const LoadingScreen(),
+      routerConfig: appGlobalRouter,
     );
   }
-  
 }
-
-
-

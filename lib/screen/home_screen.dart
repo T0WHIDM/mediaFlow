@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:mediaflow/constants/colors.dart';
+import 'package:go_router/go_router.dart';
+import 'package:mediaflow/core/constants/colors.dart';
 import 'package:mediaflow/screen/about_screen.dart';
 import 'package:mediaflow/provider/theme_provider.dart';
 import 'package:mediaflow/provider/download_provider.dart';
@@ -419,9 +420,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             onTap: () {
               Navigator.pop(context);
-              Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) => const AboutScreen()),
-              );
+              context.goNamed(AboutScreen.routeName);
             },
           ),
           Consumer<ThemeProvider>(
