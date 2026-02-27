@@ -24,7 +24,6 @@ class NavigatorSell extends StatelessWidget {
         onTap: (int index) {
           navigationShell.goBranch(
             index,
-            // این گزینه باعث می‌شود اگر روی تب فعلی دوباره کلیک شد، به اول صفحه برگردد (رفتار استاندارد)
             initialLocation: index == navigationShell.currentIndex,
           );
         },

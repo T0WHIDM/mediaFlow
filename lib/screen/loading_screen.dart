@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mediaflow/screen/home_screen.dart';
 
 class LoadingScreen extends StatelessWidget {
   const LoadingScreen({super.key});
@@ -26,7 +27,7 @@ class _LoadingState extends State<Loading> {
     super.initState();
     Future.delayed(const Duration(seconds: 2), () {
       if (mounted) {
-        context.go('/home');
+        context.goNamed(HomeScreen.routeName);
       }
     });
   }
