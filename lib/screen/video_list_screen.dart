@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:mediaflow/constants/colors.dart';
+import 'package:mediaflow/core/constants/colors.dart';
 import 'package:mediaflow/provider/download_provider.dart';
 import 'package:open_file/open_file.dart';
 import 'package:provider/provider.dart';
@@ -19,7 +19,6 @@ class _VideoListScreenState extends State<VideoListScreen> {
   @override
   void initState() {
     super.initState();
-    // بارگذاری اولیه فایل‌ها به محض ساخته شدن صفحه
     WidgetsBinding.instance.addPostFrameCallback((_) {
       context.read<DownloadProvider>().loadDownloadedFiles();
     });

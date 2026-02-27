@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:mediaflow/constants/colors.dart'; 
+import 'package:mediaflow/core/constants/colors.dart';
 import 'package:mediaflow/screen/home_screen.dart';
 import 'package:mediaflow/screen/video_list_screen.dart';
 
@@ -9,6 +9,8 @@ class DashBoardScreen extends StatefulWidget {
 
   @override
   State<DashBoardScreen> createState() => _DashBoardScreenState();
+
+  static String get routeName => 'dash_board';
 }
 
 class _DashBoardScreenState extends State<DashBoardScreen> {
