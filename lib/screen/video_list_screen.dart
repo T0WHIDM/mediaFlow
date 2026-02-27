@@ -11,6 +11,8 @@ class VideoListScreen extends StatefulWidget {
 
   @override
   State<VideoListScreen> createState() => _VideoListScreenState();
+
+  static String get routeName => 'downloads';
 }
 
 class _VideoListScreenState extends State<VideoListScreen> {

@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mediaflow/core/constants/colors.dart';
-import 'package:mediaflow/screen/dash_board_screen.dart';
-import 'package:mediaflow/util/url_luncher.dart';
+import 'package:mediaflow/screen/home_screen.dart';
+import 'package:mediaflow/screen/navigator_sell.dart';
+import 'package:mediaflow/core/util/url_luncher.dart';
 
 class AboutScreen extends StatelessWidget {
   const AboutScreen({super.key});
@@ -34,9 +35,9 @@ class AboutScreen extends StatelessWidget {
         ),
         leading: IconButton(
           onPressed: () {
-            context.goNamed(DashBoardScreen.routeName);
+            context.goNamed(HomeScreen.routeName);
           },
-          icon: const FaIcon(FontAwesomeIcons.arrowLeft),
+          icon: const FaIcon(FontAwesomeIcons.arrowLeft,size: 22,),
         ),
       ),
       body: Padding(
