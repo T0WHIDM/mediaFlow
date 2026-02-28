@@ -27,7 +27,7 @@ You can download the latest APK from the Releases page:
 
 ## 📸 Screenshots
 
-<img width="220" height="600" alt="Screenshot_1772238642" src="https://github.com/user-attachments/assets/92024d0c-b604-4ea3-aeb3-7ce32392279a" /> <img width="220" height="600" alt="Screenshot_1772238742" src="https://github.com/user-attachments/assets/58b3c489-2801-4cf4-aa7c-2d2a67b7c05d" /> <img width="220" height="600" alt="Screenshot_1772238656" src="https://github.com/user-attachments/assets/329a7b8a-6899-4ec3-b784-a3c0e8328c83" /> <img width="220" height="600" alt="Screenshot_1772238670" src="https://github.com/user-attachments/assets/2d9a86a3-15a6-420a-89f9-e107b966b92d" />
+<img width="220" height="600" alt="Screenshot_1772238642" src="https://github.com/user-attachments/assets/92024d0c-b604-4ea3-aeb3-7ce32392279a" /> <img width="220" height="600" alt="Screenshot_1772238742" src="https://github.com/user-attachments/assets/58b3c489-2801-4cf4-aa7c-2d2a67b7c05d" /> <img width="220" height="600" alt="Screenshot_1772238656" src="https://github.com/user-attachments/assets/329a7b8a-6899-4ec3-b784-a3c0e8328c83" /> 
 
 
 
